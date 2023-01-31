@@ -14,9 +14,6 @@ def login(request):
             nome = form['nome_login'].value()
             senha = form['senha'].value()
 
-            if User.objects.filter(username=nome).exists():
-                return redirect('cadastro')
-
             usuario = auth.authenticate(
                 request,
                 username=nome,
@@ -30,8 +27,6 @@ def login(request):
                 messages.error(request, 'Erro ao efetuar o login.')
                 return redirect('login')
 
-            return redirect('login')
-
     return render(request, "usuarios/login.html", {"form": form})
 
 def cadastro(request):
@@ -39,10 +34,6 @@ def cadastro(request):
     if request.method == 'POST':
         form = CadastroForms(request.POST)
         if form.is_valid():
-            if form['senha1'].value() != form['senha2'].value():
-                messages.error(request, 'Senhas diferentes!')
-                return redirect('cadastro')
-
             nome = form['nome_cadastro'].value()
             email = form['email'].value()
             senha = form['senha1'].value()
